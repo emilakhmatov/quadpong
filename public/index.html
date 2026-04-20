@@ -8,163 +8,221 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a0a14;color:#fff;font-family:system-ui,-apple-system,sans-serif;
   min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.sc{display:none;flex-direction:column;align-items:center;gap:1.1rem;
-  width:100%;max-width:420px;padding:1.75rem 1.25rem}
+
+.sc{display:none;flex-direction:column;align-items:center;gap:1rem;
+  width:100%;max-width:430px;padding:1.6rem 1.25rem}
 .sc.on{display:flex}
+
 h1{font-size:2.3rem;font-weight:700;letter-spacing:-1px;
   background:linear-gradient(135deg,#7F77DD,#5DCAA5);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ── Name input ── */
+.name-row{width:100%;display:flex;flex-direction:column;gap:.35rem}
+.name-label{font-size:.78rem;opacity:.45}
+.name-input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  border-radius:10px;color:#fff;font-size:1rem;padding:.55rem .9rem;
+  width:100%;outline:none;transition:border-color .15s}
+.name-input:focus{border-color:#7F77DD}
+.name-input::placeholder{opacity:.3}
+
+/* ── Tabs ── */
 .tabs{display:flex;background:rgba(255,255,255,.06);border-radius:12px;padding:3px;width:100%}
 .tab{flex:1;padding:.5rem;border-radius:9px;text-align:center;cursor:pointer;font-size:.9rem;
   transition:all .15s;color:rgba(255,255,255,.5)}
 .tab.on{background:rgba(127,119,221,.3);color:#fff;font-weight:500}
+
+/* ── Cards ── */
 .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;padding:1.25rem;width:100%}
-.clabel{font-size:.78rem;opacity:.45;margin-bottom:.7rem}
+  border-radius:16px;padding:1.2rem;width:100%}
+.clabel{font-size:.78rem;opacity:.45;margin-bottom:.65rem}
+
+/* ── Mode buttons ── */
 .modes{display:flex;gap:.65rem}
-.modeBtn{flex:1;padding:1rem .5rem;background:rgba(255,255,255,.04);
+.modeBtn{flex:1;padding:.9rem .5rem;background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;
-  text-align:center;color:#fff;font-size:.85rem;transition:all .15s}
+  text-align:center;color:#fff;font-size:.85rem;transition:all .15s;line-height:1.3}
 .modeBtn:hover,.modeBtn.on{border-color:#7F77DD;background:rgba(127,119,221,.15)}
-.modeIcon{font-size:1.5rem;margin-bottom:.3rem}
-.modeSub{font-size:.7rem;opacity:.45;margin-top:.15rem}
-.diffs{display:flex;gap:.5rem;margin-top:.7rem}
+.modeEmoji{font-size:1.8rem;display:block;margin-bottom:.3rem}
+.modeSub{font-size:.7rem;opacity:.4;margin-top:.15rem;display:block}
+
+/* ── Difficulty ── */
+.diffs{display:flex;gap:.5rem;margin-top:.65rem}
 .diffBtn{flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.04);cursor:pointer;font-size:.8rem;color:rgba(255,255,255,.5);text-align:center;transition:all .15s}
+  background:rgba(255,255,255,.04);cursor:pointer;font-size:.8rem;
+  color:rgba(255,255,255,.45);text-align:center;transition:all .15s}
 .diffBtn:hover,.diffBtn.on{color:#fff}
-#diff-normal.on{border-color:#5DCAA5;background:rgba(93,202,165,.15)}
-#diff-hard.on{border-color:#F0997B;background:rgba(240,153,123,.15)}
-input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+#diff-normal.on{border-color:#5DCAA5;background:rgba(93,202,165,.15);color:#5DCAA5}
+#diff-hard.on  {border-color:#F0997B;background:rgba(240,153,123,.15);color:#F0997B}
+
+/* ── Buttons & inputs ── */
+input.code-in{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
   border-radius:10px;color:#fff;font-size:1.5rem;padding:.5rem .75rem;
   width:100%;text-align:center;letter-spacing:.25em;text-transform:uppercase;outline:none}
-input:focus{border-color:#7F77DD}
-input::placeholder{opacity:.22;letter-spacing:.1em}
+input.code-in:focus{border-color:#7F77DD}
+input.code-in::placeholder{opacity:.22;letter-spacing:.1em}
+
 .btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
   color:#fff;padding:.65rem 1.5rem;border-radius:10px;font-size:.9rem;
   cursor:pointer;width:100%;transition:all .15s}
 .btn:hover{background:rgba(255,255,255,.13)}
 .btn.pri{background:#7F77DD;border-color:#7F77DD}
 .btn.pri:hover{background:#534AB7}
+
 .or{display:flex;align-items:center;gap:.65rem;width:100%;
   color:rgba(255,255,255,.22);font-size:.78rem}
 .or::before,.or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+
+/* ── Waiting ── */
 .roomCode{font-size:3rem;font-weight:700;letter-spacing:.3em;color:#7F77DD;text-align:center}
 .slots{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;width:100%}
-.slot{padding:.5rem .7rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);
+.slot{padding:.55rem .75rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);
   font-size:.82rem;text-align:center;opacity:.35;transition:all .25s}
 .slot.filled{opacity:1}
+
+/* ── Countdown ── */
 .cdNum{font-size:7rem;font-weight:700;color:#7F77DD;text-align:center;line-height:1}
+
+/* ── Game ── */
 #gw{width:100vw;height:100vh;display:none;flex-direction:column;
-  align-items:center;justify-content:center;gap:5px}
+  align-items:center;justify-content:center;gap:4px}
 #gw.on{display:flex}
 canvas{display:block;border-radius:12px;touch-action:none}
-#chint{font-size:.7rem;opacity:.3;text-align:center}
+#chint{font-size:.68rem;opacity:.28;text-align:center}
+
+/* ── Gameover ── */
 .goScores{display:flex;flex-direction:column;gap:.3rem;width:100%}
-.goRow{display:flex;justify-content:space-between;padding:.38rem 0;
-  border-bottom:1px solid rgba(255,255,255,.07);font-size:.88rem}
-.winTag{font-size:1.05rem;font-weight:600;padding:.42rem 1.2rem;border-radius:8px;text-align:center}
+.goRow{display:flex;justify-content:space-between;align-items:center;
+  padding:.38rem 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.88rem}
+.winTag{font-size:1.05rem;font-weight:600;padding:.45rem 1.2rem;border-radius:8px;text-align:center}
 .err{color:#F09595;font-size:.8rem;text-align:center;min-height:1em}
 </style>
 </head>
 <body>
 
-<!-- LOBBY -->
+<!-- ─────────── LOBBY ─────────── -->
 <div class="sc on" id="s-lobby">
-  <h1>Quad Pong</h1>
-  <div class="tabs">
-    <div class="tab on" id="tab-solo"  onclick="switchTab('solo')">Один игрок</div>
-    <div class="tab"    id="tab-multi" onclick="switchTab('multi')">Мультиплеер</div>
+  <h1>🏓 Quad Pong</h1>
+
+  <!-- Name input -->
+  <div class="name-row">
+    <div class="name-label">👤 Твоё имя</div>
+    <input class="name-input" id="player-name" placeholder="Введи своё имя…" maxlength="16">
   </div>
-  <div id="panel-solo" style="width:100%;display:flex;flex-direction:column;gap:.9rem">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab on" id="tab-solo"  onclick="switchTab('solo')">🤖 Один игрок</div>
+    <div class="tab"    id="tab-multi" onclick="switchTab('multi')">👥 Мультиплеер</div>
+  </div>
+
+  <!-- Solo panel -->
+  <div id="panel-solo" style="width:100%;display:flex;flex-direction:column;gap:.85rem">
     <div class="card">
       <div class="clabel">Количество соперников</div>
       <div class="modes">
         <div class="modeBtn on" id="solo-2" onclick="setSoloMode(2,this)">
-          <div class="modeIcon">🤖</div><div>1 vs 1</div><div class="modeSub">Один AI</div>
+          <span class="modeEmoji">🎮🆚🤖</span>
+          <span>1 vs 1</span>
+          <span class="modeSub">Один противник</span>
         </div>
         <div class="modeBtn" id="solo-4" onclick="setSoloMode(4,this)">
-          <div class="modeIcon">🤖🤖🤖</div><div>1 vs 3</div><div class="modeSub">Три AI</div>
+          <span class="modeEmoji">🎮🆚🤖🤖🤖</span>
+          <span>1 vs 3</span>
+          <span class="modeSub">Три противника</span>
         </div>
       </div>
-      <div class="clabel" style="margin-top:.9rem;margin-bottom:.4rem">Сложность</div>
+      <div class="clabel" style="margin-top:.85rem;margin-bottom:.4rem">Сложность</div>
       <div class="diffs">
-        <div class="diffBtn on" id="diff-normal" onclick="setDiff('normal',this)">Нормальная</div>
-        <div class="diffBtn"    id="diff-hard"   onclick="setDiff('hard',this)">Сложная</div>
+        <div class="diffBtn on" id="diff-normal" onclick="setDiff('normal',this)">😌 Нормально</div>
+        <div class="diffBtn"    id="diff-hard"   onclick="setDiff('hard',this)">😤 Сложно</div>
       </div>
     </div>
-    <button class="btn pri" onclick="startSolo()">Играть против компьютера</button>
+    <button class="btn pri" onclick="startSolo()">🚀 Играть против AI</button>
   </div>
-  <div id="panel-multi" style="width:100%;display:none;flex-direction:column;gap:.9rem">
+
+  <!-- Multi panel -->
+  <div id="panel-multi" style="width:100%;display:none;flex-direction:column;gap:.85rem">
     <div class="card">
       <div class="clabel">Создать комнату</div>
       <div class="modes">
         <div class="modeBtn on" id="mp-2" onclick="setMpMode(2,this)">
-          <div class="modeIcon">⬛</div><div>2 игрока</div><div class="modeSub">Лево / Право</div>
+          <span class="modeEmoji">🏓🏓</span>
+          <span>2 игрока</span>
+          <span class="modeSub">Лево / Право</span>
         </div>
         <div class="modeBtn" id="mp-4" onclick="setMpMode(4,this)">
-          <div class="modeIcon">🔲</div><div>4 игрока</div><div class="modeSub">Все 4 стороны</div>
+          <span class="modeEmoji">🏓🏓🏓🏓</span>
+          <span>4 игрока</span>
+          <span class="modeSub">Все 4 стороны</span>
         </div>
       </div>
-      <button class="btn pri" style="margin-top:.9rem" onclick="createRoom()">Создать комнату</button>
+      <button class="btn pri" style="margin-top:.85rem" onclick="createRoom()">🎮 Создать комнату</button>
     </div>
     <div class="or">или</div>
     <div class="card">
       <div class="clabel">Войти по коду</div>
-      <input id="code-in" placeholder="XXXX" maxlength="4" oninput="this.value=this.value.toUpperCase()">
-      <button class="btn" style="margin-top:.7rem" onclick="joinRoom()">Войти</button>
+      <input class="code-in" id="code-in" placeholder="XXXX" maxlength="4"
+             oninput="this.value=this.value.toUpperCase()">
+      <button class="btn" style="margin-top:.7rem" onclick="joinRoom()">🚪 Войти в комнату</button>
     </div>
   </div>
+
   <div class="err" id="lobby-err"></div>
 </div>
 
-<!-- WAITING -->
+<!-- ─────────── WAITING ─────────── -->
 <div class="sc" id="s-wait">
-  <h1>Quad Pong</h1>
+  <h1>🏓 Quad Pong</h1>
   <p style="opacity:.42;font-size:.88rem">Отправь код друзьям</p>
   <div class="roomCode" id="show-code">----</div>
   <div class="card">
-    <div class="clabel">Игроки</div>
+    <div class="clabel">Игроки в комнате</div>
     <div class="slots" id="slots"></div>
   </div>
-  <p style="font-size:.78rem;opacity:.35;text-align:center">Игра начнётся когда все подключатся</p>
+  <p style="font-size:.78rem;opacity:.35;text-align:center">
+    Игра начнётся автоматически когда все подключатся
+  </p>
   <div style="font-size:.72rem;opacity:.28;background:rgba(255,255,255,.04);
     padding:.4rem 1rem;border-radius:8px;width:100%;text-align:center" id="your-hint"></div>
 </div>
 
-<!-- COUNTDOWN -->
+<!-- ─────────── COUNTDOWN ─────────── -->
 <div class="sc" id="s-cd">
-  <p style="opacity:.42">Приготовьтесь!</p>
+  <p style="opacity:.42;font-size:.9rem">Приготовьтесь!</p>
   <div class="cdNum" id="cd-n">3</div>
 </div>
 
-<!-- GAME -->
+<!-- ─────────── GAME ─────────── -->
 <div id="gw">
   <canvas id="c"></canvas>
   <div id="chint"></div>
 </div>
 
-<!-- GAMEOVER -->
+<!-- ─────────── GAMEOVER ─────────── -->
 <div class="sc" id="s-go">
-  <h1>Конец игры</h1>
+  <h1>🏆 Конец игры</h1>
   <div class="winTag" id="win-tag"></div>
   <div class="card" style="width:100%">
     <div class="clabel">Итоговые очки</div>
     <div class="goScores" id="go-scores"></div>
   </div>
-  <button class="btn pri" onclick="location.reload()">Играть снова</button>
+  <button class="btn pri" onclick="location.reload()">🔄 Играть снова</button>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-// ─── Constants (mirror server) ────────────────────────────────────
+// ─── Constants ───────────────────────────────────────────────────
 const GW=800,GH=800,WALL=14,PAD_W=14,PAD_LEN=90,BALL_R=10;
 const STAR_R=13,APPLE_R=16,FIREBALL_ITEM_R=15;
 const BIG_FACTOR=1.5;
 const BASE_SPD=300, SPD_PER_SC=9, MAX_EXTRA=200;
 
-const COL  = {left:'#7F77DD',right:'#F0997B',top:'#5DCAA5',bottom:'#ED93B1'};
-const NAME = {left:'Левый',right:'Правый',top:'Верхний',bottom:'Нижний'};
-const CTRL = {left:'Мышь / W·S',right:'Мышь / ↑↓',top:'Мышь / A·D',bottom:'Мышь / ←→'};
+const COL   = {left:'#7F77DD',right:'#F0997B',top:'#5DCAA5',bottom:'#ED93B1'};
+const NAME  = {left:'Левый',right:'Правый',top:'Верхний',bottom:'Нижний'};
+const CTRL  = {left:'Мышь / W·S',right:'Мышь / ↑↓',top:'Мышь / A·D',bottom:'Мышь / ←→'};
+// Life emojis: 3 full, then losing
+const LIFE_EMOJI = ['💀','❤️','❤️❤️','❤️❤️❤️'];
 
 // ─── State ───────────────────────────────────────────────────────
 let socket, myMode=2, myDiff='normal', mySide, gs=null;
@@ -177,12 +235,15 @@ let localPos=GW/2-PAD_LEN/2, localVel=0;
 let lastFrameTime=0;
 const ACCEL=2600, DECEL=3800;
 
-// ─── UI ──────────────────────────────────────────────────────────
+function getPlayerName() {
+  return document.getElementById('player-name').value.trim().slice(0,16) || 'Игрок';
+}
+
+// ─── UI helpers ──────────────────────────────────────────────────
 function show(id){
   document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
   document.getElementById('gw').classList.remove('on');
-  const el=document.getElementById(id);
-  el.classList.add('on');
+  document.getElementById(id).classList.add('on');
 }
 function switchTab(t){
   document.getElementById('tab-solo').classList.toggle('on',t==='solo');
@@ -191,10 +252,22 @@ function switchTab(t){
   document.getElementById('panel-multi').style.display = t==='multi'?'flex':'none';
 }
 let soloMode=2;
-function setSoloMode(m,el){ soloMode=m; document.querySelectorAll('[id^="solo-"]').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
-function setDiff(d,el){ myDiff=d; document.querySelectorAll('.diffBtn').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
+function setSoloMode(m,el){
+  soloMode=m;
+  document.querySelectorAll('[id^="solo-"]').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function setDiff(d,el){
+  myDiff=d;
+  document.querySelectorAll('.diffBtn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
 let mpMode=2;
-function setMpMode(m,el){ mpMode=m; document.querySelectorAll('[id^="mp-"]').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
+function setMpMode(m,el){
+  mpMode=m;
+  document.querySelectorAll('[id^="mp-"]').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
 
 // ─── Socket ──────────────────────────────────────────────────────
 socket=io();
@@ -203,18 +276,23 @@ socket.on('joined',({roomId,side,solo})=>{
   mySide=side;
   if(!solo){
     document.getElementById('show-code').textContent=roomId;
-    document.getElementById('your-hint').textContent=`Вы — ${NAME[side]}  |  ${CTRL[side]}`;
+    document.getElementById('your-hint').textContent=
+      `Вы — ${NAME[side]}  |  ${CTRL[side]}`;
     show('s-wait');
   }
 });
 
-socket.on('lobby',({players,mode})=>{
+socket.on('lobby',({players,mode,names})=>{
   myMode=mode;
   const all=mode===2?['left','right']:['left','right','top','bottom'];
   document.getElementById('slots').innerHTML=all.map(s=>{
     const ok=players.includes(s);
-    return `<div class="slot ${ok?'filled':''}" style="border-color:${ok?COL[s]+'66':'rgba(255,255,255,.1)'};color:${ok?COL[s]:'rgba(255,255,255,.3)'}">
-      ${NAME[s]} ${ok?(s===mySide?'(вы)':'✓'):'…'}</div>`;
+    const displayName = (names&&names[s]) ? names[s] : NAME[s];
+    return `<div class="slot ${ok?'filled':''}"
+      style="border-color:${ok?COL[s]+'66':'rgba(255,255,255,.1)'};
+             color:${ok?COL[s]:'rgba(255,255,255,.25)'}">
+      ${ok?'✅':'⏳'} ${displayName}${s===mySide?' (вы)':''}
+    </div>`;
   }).join('');
 });
 
@@ -222,7 +300,9 @@ socket.on('countdown',()=>{
   show('s-cd');
   let n=3; document.getElementById('cd-n').textContent=n;
   const t=setInterval(()=>{
-    n--; if(n<=0){clearInterval(t);initGame();} else document.getElementById('cd-n').textContent=n;
+    n--;
+    if(n<=0){ clearInterval(t); initGame(); }
+    else document.getElementById('cd-n').textContent=n;
   },1000);
 });
 
@@ -231,24 +311,44 @@ socket.on('state',s=>{ gs=s; });
 socket.on('gameover',({winner,scores})=>{
   cancelAnimationFrame(animId); clearInterval(sendTimer);
   const wt=document.getElementById('win-tag');
-  if(winner){wt.textContent=NAME[winner]+' победил!';wt.style.background=COL[winner]+'33';wt.style.color=COL[winner];}
-  else{wt.textContent='Ничья!';wt.style.color='#fff';}
+  const winName = winner ? ((gs?.names?.[winner])||NAME[winner]) : null;
+  if(winner){
+    wt.textContent=`🏆 ${winName} победил!`;
+    wt.style.background=COL[winner]+'33';
+    wt.style.color=COL[winner];
+  } else {
+    wt.textContent='🤝 Ничья!'; wt.style.color='#fff';
+  }
   const all=myMode===2?['left','right']:['left','right','top','bottom'];
-  document.getElementById('go-scores').innerHTML=all.map(s=>
-    `<div class="goRow"><span style="color:${COL[s]}">${NAME[s]}</span><span>${scores[s]||0} очков</span></div>`).join('');
+  document.getElementById('go-scores').innerHTML=all.map(s=>{
+    const playerName=(gs?.names?.[s])||NAME[s];
+    return `<div class="goRow">
+      <span style="color:${COL[s]}">${playerName}</span>
+      <span>${scores[s]||0} ⭐</span>
+    </div>`;
+  }).join('');
   show('s-go');
 });
 
-socket.on('playerLeft',()=>{ cancelAnimationFrame(animId); clearInterval(sendTimer); alert('Игрок отключился.'); location.reload(); });
+socket.on('playerLeft',()=>{
+  cancelAnimationFrame(animId); clearInterval(sendTimer);
+  alert('Игрок отключился.'); location.reload();
+});
 socket.on('err',m=>{ document.getElementById('lobby-err').textContent=m; });
 
 // ─── Actions ─────────────────────────────────────────────────────
-function startSolo(){ myMode=soloMode; socket.emit('solo',{mode:soloMode,difficulty:myDiff}); }
-function createRoom(){ myMode=mpMode; socket.emit('create',{mode:mpMode}); }
+function startSolo(){
+  myMode=soloMode;
+  socket.emit('solo',{mode:soloMode,difficulty:myDiff,name:getPlayerName()});
+}
+function createRoom(){
+  myMode=mpMode;
+  socket.emit('create',{mode:mpMode,name:getPlayerName()});
+}
 function joinRoom(){
   const c=document.getElementById('code-in').value.trim();
-  if(c.length!==4){document.getElementById('lobby-err').textContent='Нужен 4-символьный код';return;}
-  socket.emit('join',{roomId:c});
+  if(c.length!==4){document.getElementById('lobby-err').textContent='Нужен 4-буквенный код';return;}
+  socket.emit('join',{roomId:c,name:getPlayerName()});
 }
 
 // ─── Game init ───────────────────────────────────────────────────
@@ -268,13 +368,16 @@ function initGame(){
   };
   canvas.addEventListener('touchstart',onTouch,{passive:false});
   canvas.addEventListener('touchmove', onTouch,{passive:false});
+
   window.addEventListener('keydown',e=>{
     keys[e.key]=true;
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
   });
   window.addEventListener('keyup',e=>keys[e.key]=false);
 
-  document.getElementById('chint').textContent=`${NAME[mySide]}  |  ${CTRL[mySide]}`;
+  document.getElementById('chint').textContent=
+    `${getPlayerName()} · ${NAME[mySide]}  |  ${CTRL[mySide]}`;
+
   document.getElementById('gw').classList.add('on');
 
   const isV=mySide==='left'||mySide==='right';
@@ -286,24 +389,24 @@ function initGame(){
 }
 
 function resize(){
-  const sz=Math.min(window.innerWidth-12,window.innerHeight-52,730);
+  const sz=Math.min(window.innerWidth-12,window.innerHeight-48,740);
   canvas.width=canvas.height=sz; scale=sz/GW;
 }
 
-// ─── Smooth paddle (client-side prediction) ──────────────────────
+// ─── Smooth paddle input ─────────────────────────────────────────
 function updateLocalPaddle(dt){
   const isV  = mySide==='left'||mySide==='right';
   const sc   = gs?.scores?.[mySide]||0;
-  const spd  = Math.min(BASE_SPD + sc*SPD_PER_SC, BASE_SPD+MAX_EXTRA);
+  const spd  = Math.min(BASE_SPD+sc*SPD_PER_SC, BASE_SPD+MAX_EXTRA);
   const eLen = (gs?.powerups?.[mySide]?.type==='big') ? PAD_LEN*BIG_FACTOR : PAD_LEN;
-  const lim  = (isV?GH:GW) - WALL - PAD_W - eLen;
+  const lim  = (isV?GH:GW)-WALL-PAD_W-eLen;
   let dir=0;
   if(isV){
-    if(mySide==='left') { if(keys['w']||keys['W'])dir=-1; if(keys['s']||keys['S'])dir=1; }
-    else                { if(keys['ArrowUp'])dir=-1; if(keys['ArrowDown'])dir=1; }
+    if(mySide==='left'){ if(keys['w']||keys['W'])dir=-1; if(keys['s']||keys['S'])dir=1; }
+    else               { if(keys['ArrowUp'])dir=-1; if(keys['ArrowDown'])dir=1; }
   } else {
-    if(mySide==='top')  { if(keys['a']||keys['A'])dir=-1; if(keys['d']||keys['D'])dir=1; }
-    else                { if(keys['ArrowLeft'])dir=-1; if(keys['ArrowRight'])dir=1; }
+    if(mySide==='top') { if(keys['a']||keys['A'])dir=-1; if(keys['d']||keys['D'])dir=1; }
+    else               { if(keys['ArrowLeft'])dir=-1; if(keys['ArrowRight'])dir=1; }
   }
   if(dir!==0){
     localVel=Math.sign(dir)*Math.min(Math.abs(localVel)+ACCEL*dt, spd);
@@ -314,7 +417,7 @@ function updateLocalPaddle(dt){
   if(localVel!==0){
     localPos=Math.max(WALL+PAD_W, Math.min(lim, localPos+localVel*dt));
   } else {
-    const mt=isV ? mouseY-eLen/2 : mouseX-eLen/2;
+    const mt=isV?mouseY-eLen/2:mouseX-eLen/2;
     localPos=Math.max(WALL+PAD_W, Math.min(lim, mt));
   }
 }
@@ -326,7 +429,6 @@ function sendPos(){
   if(p!==lastSent){ socket.emit('move',{pos:p}); lastSent=p; }
 }
 
-// ─── Game loop ───────────────────────────────────────────────────
 function loop(now){
   const dt=Math.min((now-lastFrameTime)/1000,0.05);
   lastFrameTime=now;
@@ -363,10 +465,10 @@ function draw(){
     ctx.textAlign='center'; ctx.fillText('Ожидание…',S/2,S/2); return;
   }
 
-  const{ball,paddles,stars,apples,fireballs,lasers,powerups,scores,lives,bots}=gs;
+  const{ball,paddles,stars,apples,fireballs,lasers,powerups,scores,lives,bots,names}=gs;
   const all=myMode===2?['left','right']:['left','right','top','bottom'];
 
-  // Walls
+  // ── Walls ───────────────────────────────────────────────────────
   all.forEach(s=>{
     const alive=paddles[s]?.alive;
     ctx.fillStyle=alive?'rgba(255,255,255,.05)':'rgba(220,60,60,.18)';
@@ -377,7 +479,71 @@ function draw(){
     if(s==='bottom')ctx.fillRect(0,S-w,S,w);
   });
 
-  // Lasers
+  // ── Name + lives labels per side ────────────────────────────────
+  all.forEach(s=>{
+    const pad   = paddles[s];
+    const lv    = Math.max(0, Math.min(3, lives[s]||0));
+    const pName = (names&&names[s]) || NAME[s];
+    const col   = COL[s];
+    const isAlive = pad?.alive;
+    const lifeStr = LIFE_EMOJI[lv];  // e.g. '❤️❤️❤️'
+    const label   = `${pName}`;
+
+    ctx.save();
+    const fs = 9*scale;
+    const wh = WALL*scale;
+    const mid = S/2;
+
+    if(s==='left'){
+      ctx.translate(wh/2, mid);
+      ctx.rotate(-Math.PI/2);
+      ctx.textAlign='center';
+      ctx.font=`600 ${fs}px system-ui`;
+      ctx.fillStyle=isAlive?col:'rgba(200,80,80,.6)';
+      ctx.fillText(label, 0, -fs*.4);
+      ctx.font=`${fs*1.1}px system-ui`;
+      ctx.fillText(lifeStr, 0, fs*.9);
+    } else if(s==='right'){
+      ctx.translate(S-wh/2, mid);
+      ctx.rotate(Math.PI/2);
+      ctx.textAlign='center';
+      ctx.font=`600 ${fs}px system-ui`;
+      ctx.fillStyle=isAlive?col:'rgba(200,80,80,.6)';
+      ctx.fillText(label, 0, -fs*.4);
+      ctx.font=`${fs*1.1}px system-ui`;
+      ctx.fillText(lifeStr, 0, fs*.9);
+    } else if(s==='top'){
+      ctx.textAlign='center';
+      ctx.font=`600 ${fs}px system-ui`;
+      ctx.fillStyle=isAlive?col:'rgba(200,80,80,.6)';
+      ctx.fillText(label, mid, wh*.62);
+      ctx.font=`${fs*1.1}px system-ui`;
+      ctx.fillText(lifeStr, mid, wh*.62+fs*1.2);
+    } else {
+      ctx.textAlign='center';
+      ctx.font=`600 ${fs}px system-ui`;
+      ctx.fillStyle=isAlive?col:'rgba(200,80,80,.6)';
+      ctx.fillText(label, mid, S-wh*.62+fs*.3);
+      ctx.font=`${fs*1.1}px system-ui`;
+      ctx.fillText(lifeStr, mid, S-wh*.62-fs*.5);
+    }
+    ctx.restore();
+
+    // Score (small, inside field near wall)
+    ctx.save();
+    ctx.textAlign='center';
+    ctx.font=`bold ${9.5*scale}px system-ui`;
+    ctx.fillStyle=isAlive?col+'bb':'rgba(200,80,80,.4)';
+    const sc=scores[s]||0;
+    const wallEdge=WALL*scale+PAD_W*scale+10*scale;
+    if(s==='left')  ctx.fillText(sc, wallEdge, mid);
+    if(s==='right') ctx.fillText(sc, S-wallEdge, mid);
+    if(s==='top')   ctx.fillText(sc, mid-S*.22, wallEdge+2*scale);
+    if(s==='bottom')ctx.fillText(sc, mid-S*.22, S-wallEdge-2*scale);
+    ctx.restore();
+  });
+
+  // ── Lasers ──────────────────────────────────────────────────────
   all.forEach(s=>{
     if(!lasers?.[s]) return;
     const pad=paddles[s]; if(!pad?.alive) return;
@@ -392,15 +558,9 @@ function draw(){
     if(s==='top')   {ctx.moveTo(p1,lOff);ctx.lineTo(p2,lOff);}
     if(s==='bottom'){ctx.moveTo(p1,S-lOff);ctx.lineTo(p2,S-lOff);}
     ctx.stroke(); ctx.shadowBlur=0;
-    ctx.fillStyle='rgba(255,51,68,.6)'; ctx.font=`bold ${7*scale}px system-ui`; ctx.textAlign='center';
-    const mx=(p1+p2)/2;
-    if(s==='left')  ctx.fillText('ЛАЗЕР',lOff+22*scale,mx);
-    if(s==='right') ctx.fillText('ЛАЗЕР',S-lOff-22*scale,mx);
-    if(s==='top')   ctx.fillText('ЛАЗЕР',mx,lOff+18*scale);
-    if(s==='bottom')ctx.fillText('ЛАЗЕР',mx,S-lOff-10*scale);
   });
 
-  // Paddles
+  // ── Paddles ─────────────────────────────────────────────────────
   all.forEach(s=>{
     const pad=paddles[s]; if(!pad?.alive) return;
     const col=COL[s];
@@ -409,16 +569,16 @@ function draw(){
     const pw=PAD_W*scale, wOf=WALL*scale;
     const dp=(s===mySide)?localPos:pad.pos;
     let rx,ry,rw,rh;
-    if(s==='left')  {rx=wOf;       ry=dp*scale; rw=pw;   rh=eLen;}
-    if(s==='right') {rx=S-wOf-pw;  ry=dp*scale; rw=pw;   rh=eLen;}
-    if(s==='top')   {rx=dp*scale;  ry=wOf;      rw=eLen; rh=pw;}
-    if(s==='bottom'){rx=dp*scale;  ry=S-wOf-pw; rw=eLen; rh=pw;}
+    if(s==='left')  {rx=wOf;      ry=dp*scale; rw=pw;   rh=eLen;}
+    if(s==='right') {rx=S-wOf-pw; ry=dp*scale; rw=pw;   rh=eLen;}
+    if(s==='top')   {rx=dp*scale; ry=wOf;      rw=eLen; rh=pw;}
+    if(s==='bottom'){rx=dp*scale; ry=S-wOf-pw; rw=eLen; rh=pw;}
     const gCol=isBig?'#FFCC44':s===mySide?col:null;
     if(gCol){ctx.shadowColor=gCol; ctx.shadowBlur=(isBig?22:14)*scale;}
     ctx.fillStyle=isBig?lighten(col,45):col;
     rrFill(rx,ry,rw,rh,3*scale); ctx.shadowBlur=0;
 
-    // Power-up timer bar
+    // Big paddle timer bar
     if(isBig&&s===mySide){
       const frac=Math.max(0,(powerups[s].timer||0)/6);
       const bw=90*scale, bh=4*scale;
@@ -430,68 +590,47 @@ function draw(){
       ctx.fillStyle='rgba(255,204,68,.2)'; ctx.fillRect(bx,by,bw,bh);
       ctx.fillStyle='#FFCC44'; ctx.fillRect(bx,by,bw*frac,bh);
     }
-
-    // AI label
-    if(bots?.[s]){
-      ctx.fillStyle='rgba(255,255,255,.28)'; ctx.font=`${8*scale}px system-ui`; ctx.textAlign='center';
-      const wc=WALL*scale/2;
-      if(s==='left')  ctx.fillText('AI',wc,S/2);
-      if(s==='right') ctx.fillText('AI',S-wc,S/2);
-      if(s==='top')   ctx.fillText('AI',S/2,wc+10*scale);
-      if(s==='bottom')ctx.fillText('AI',S/2,S-wc+4*scale);
-    }
-
-    // Score + lives
-    const wc=WALL*scale/2;
-    ctx.fillStyle=col; ctx.textAlign='center';
-    ctx.font=`bold ${10*scale}px system-ui`;
-    const sc=scores[s]||0, lv=lives[s]||0;
-    const lstr='♥'.repeat(Math.max(0,lv));
-    if(s==='left')  {ctx.fillText(sc,wc,S/2-8*scale); ctx.font=`${8*scale}px system-ui`; ctx.fillText(lstr,wc,S/2+7*scale);}
-    if(s==='right') {ctx.fillText(sc,S-wc,S/2-8*scale); ctx.font=`${8*scale}px system-ui`; ctx.fillText(lstr,S-wc,S/2+7*scale);}
-    if(s==='top')   {ctx.fillText(sc,S/2,wc+2*scale); ctx.font=`${8*scale}px system-ui`; ctx.fillText(lstr,S/2,wc+12*scale);}
-    if(s==='bottom'){ctx.fillText(sc,S/2,S-wc-3*scale); ctx.font=`${8*scale}px system-ui`; ctx.fillText(lstr,S/2,S-2*scale);}
   });
 
-  // Stars
+  // ── Stars ───────────────────────────────────────────────────────
   (stars||[]).forEach(st=>{
     ctx.fillStyle='#FFD700'; ctx.shadowColor='#FFAA00'; ctx.shadowBlur=12*scale;
     star5(st.x*scale,st.y*scale,STAR_R*scale,STAR_R*.42*scale); ctx.shadowBlur=0;
-    ctx.fillStyle='rgba(255,215,0,.5)'; ctx.font=`${6.5*scale}px system-ui`; ctx.textAlign='center';
-    ctx.fillText('⚡ЛАЗЕР',st.x*scale,(st.y+STAR_R+8)*scale);
+    ctx.font=`${7*scale}px system-ui`; ctx.textAlign='center'; ctx.fillStyle='rgba(255,215,0,.55)';
+    ctx.fillText('⚡ ЛАЗЕР',st.x*scale,(st.y+STAR_R+9)*scale);
   });
 
-  // Apples
+  // ── Apples ──────────────────────────────────────────────────────
   (apples||[]).forEach(ap=>{
     drawApple(ap.x*scale,ap.y*scale,APPLE_R*scale);
-    ctx.fillStyle='rgba(255,90,90,.5)'; ctx.font=`${6.5*scale}px system-ui`; ctx.textAlign='center';
-    ctx.fillText('+РАЗМЕР',(ap.x)*scale,(ap.y+APPLE_R+8)*scale);
+    ctx.font=`${7*scale}px system-ui`; ctx.textAlign='center'; ctx.fillStyle='rgba(255,90,90,.55)';
+    ctx.fillText('🍎 РАЗМЕР',(ap.x)*scale,(ap.y+APPLE_R+9)*scale);
   });
 
-  // Fireball items on field
+  // ── Fireball items ───────────────────────────────────────────────
   (fireballs||[]).forEach(fb=>{
     drawFireballItem(fb.x*scale,fb.y*scale,FIREBALL_ITEM_R*scale);
-    ctx.fillStyle='rgba(255,140,0,.6)'; ctx.font=`bold ${6.5*scale}px system-ui`; ctx.textAlign='center';
-    ctx.fillText('🔥УДАР',(fb.x)*scale,(fb.y+FIREBALL_ITEM_R+8)*scale);
+    ctx.font=`${7*scale}px system-ui`; ctx.textAlign='center'; ctx.fillStyle='rgba(255,120,0,.65)';
+    ctx.fillText('🔥 УДАР',(fb.x)*scale,(fb.y+FIREBALL_ITEM_R+9)*scale);
   });
 
-  // Ball trail
+  // ── Ball trail ──────────────────────────────────────────────────
   if(ball){
     trail.push({x:ball.x,y:ball.y,t:performance.now(),fire:ball.fire});
     trail=trail.filter(p=>performance.now()-p.t<110);
     trail.forEach((p,i)=>{
       const a=(i/trail.length)*.2;
-      const col=p.fire?`rgba(255,120,0,${a})`:`rgba(255,255,255,${a})`;
-      ctx.beginPath();ctx.arc(p.x*scale,p.y*scale,BALL_R*scale*(i/trail.length)*.9,0,Math.PI*2);
-      ctx.fillStyle=col; ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p.x*scale,p.y*scale,BALL_R*scale*(i/trail.length)*.9,0,Math.PI*2);
+      ctx.fillStyle=p.fire?`rgba(255,120,0,${a})`:`rgba(255,255,255,${a})`;
+      ctx.fill();
     });
   }
 
-  // Ball
+  // ── Ball ────────────────────────────────────────────────────────
   if(ball){
     const bx=ball.x*scale, by=ball.y*scale, br=BALL_R*scale;
     if(ball.frozen){
-      // Frozen – blue pulsing + arc countdown
       const pulse=1+.18*Math.sin(performance.now()/130);
       ctx.fillStyle='#88CCFF'; ctx.shadowColor='#66AAFF'; ctx.shadowBlur=20*scale;
       ctx.beginPath(); ctx.arc(bx,by,br*pulse,0,Math.PI*2); ctx.fill();
@@ -499,18 +638,13 @@ function draw(){
       const prog=(ball.freezeTimer||0)/2;
       ctx.beginPath(); ctx.arc(bx,by,br*2.2,-Math.PI/2,-Math.PI/2+prog*2*Math.PI); ctx.stroke();
     } else if(ball.fire){
-      // Fire ball – animated flame corona
       const t=performance.now()/120;
       const flicker=0.9+0.2*Math.sin(t)*Math.cos(t*1.3);
-      // Outer glow
       ctx.shadowColor='#FF6600'; ctx.shadowBlur=26*scale;
-      // Core
       ctx.fillStyle='#FFD700';
       ctx.beginPath(); ctx.arc(bx,by,br*flicker,0,Math.PI*2); ctx.fill();
-      // Inner hot
       ctx.fillStyle='#FF4400';
       ctx.beginPath(); ctx.arc(bx,by,br*.55,0,Math.PI*2); ctx.fill();
-      // Flame spikes
       for(let i=0;i<6;i++){
         const ang=t+i*Math.PI/3;
         const len=br*(1.4+0.4*Math.sin(t*2+i));
@@ -523,7 +657,6 @@ function draw(){
       }
       ctx.shadowBlur=0;
     } else {
-      // Normal ball
       ctx.fillStyle='#fff'; ctx.shadowColor='#fff'; ctx.shadowBlur=15*scale;
       ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.fill();
     }
@@ -557,21 +690,18 @@ function drawApple(cx,cy,r){
   ctx.beginPath(); ctx.ellipse(cx-r*.22,cy-r*.15,r*.2,r*.12,-0.5,0,Math.PI*2); ctx.fill();
 }
 function drawFireballItem(cx,cy,r){
-  // Outer glow ring
+  const t=performance.now()/100;
   ctx.strokeStyle='rgba(255,100,0,.4)'; ctx.lineWidth=3*scale;
   ctx.shadowColor='#FF6600'; ctx.shadowBlur=16*scale;
   ctx.beginPath(); ctx.arc(cx,cy,r*1.5,0,Math.PI*2); ctx.stroke(); ctx.shadowBlur=0;
-  // Fire body
-  const t=performance.now()/100;
   ctx.fillStyle='#FF4400'; ctx.shadowColor='#FF6600'; ctx.shadowBlur=12*scale;
   ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
   ctx.fillStyle='#FFD700';
   ctx.beginPath(); ctx.arc(cx,cy,r*.6,0,Math.PI*2); ctx.fill();
-  // Flame wisps
   for(let i=0;i<5;i++){
     const ang=t+i*Math.PI*2/5;
     const fl=r*(1.0+0.35*Math.sin(t*2.5+i));
-    ctx.strokeStyle=`rgba(255,140,0,0.65)`; ctx.lineWidth=2*scale; ctx.lineCap='round';
+    ctx.strokeStyle='rgba(255,140,0,0.65)'; ctx.lineWidth=2*scale; ctx.lineCap='round';
     ctx.beginPath();
     ctx.moveTo(cx+Math.cos(ang)*r*.7,cy+Math.sin(ang)*r*.7);
     ctx.lineTo(cx+Math.cos(ang)*fl,  cy+Math.sin(ang)*fl);

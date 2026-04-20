@@ -33,6 +33,24 @@ const AI_SPD_NORM   = 255;
 const AI_SPD_HARD   = 365;
 const AI_REACT      = 0.13;
 
+// ─── Native American names for AI bots ──────────────────────────
+const INDIAN_NAMES = [
+  'Aiyana','Akando','Alaqua','Aponi','Aquene','Askook','Avonaco','Awenasa','Awan',
+  'Ayasha','Bidziil','Cetan','Chayton','Cheyenne','Chochmo','Cochise','Dakota',
+  'Dyami','Elan','Enola','Etu','Halona','Hiawatha','Honovi','Hototo','Huritt',
+  'Inteus','Istas','Kangi','Kaya','Keokuk','Kiowa','Kohana','Koko','Kuruk',
+  'Lenape','Luta','Mahpee','Maka','Makwa','Mato','Mingan','Nahele','Namid',
+  'Napayshni','Nashoba','Nita','Nokomis','Ohanzee','Ohitika','Onida','Pakwa',
+  'Pavati','Sahale','Sapa','Shilah','Shuman','Sihu','Suni','Takoda','Tallulah',
+  'Tasunka','Tawa','Tokala','Tocho','Wambli','Wapasha','Waya','Winona',
+  'Wohali','Yahto','Yancy','Zaltana','Chayton','Dyami','Kangee','Mahkah',
+  'Miwak','Ogima','Paytah','Sahkonteah','Skatah','Unkechaug','Wahanassatta',
+];
+function randomIndianName(used) {
+  const pool = INDIAN_NAMES.filter(n => !used.includes(n));
+  return pool[Math.floor(Math.random() * pool.length)] || 'Waya';
+}
+
 // ─── Rooms ───────────────────────────────────────────────────────
 const rooms = {};
 function uid4() {
@@ -46,10 +64,18 @@ function effLen(room, s) {
 function makeRoom(mode, botSides, difficulty) {
   const id    = uid4();
   const sides = mode === 2 ? ['left','right'] : ['left','right','top','bottom'];
+  // Assign random Indian names to bot sides
+  const usedNames = [];
+  const botNames  = {};
+  (botSides||[]).forEach(s => {
+    const n = randomIndianName(usedNames);
+    usedNames.push(n); botNames[s] = n;
+  });
   const room  = {
     id, mode, sides,
     difficulty: difficulty || 'normal',
     bots:    Object.fromEntries((botSides||[]).map(s => [s, true])),
+    names:   Object.fromEntries(sides.map(s => [s, botNames[s] || ''])),
     players: {},
     phase:   'lobby',
     interval: null, starInterval: null, appleInterval: null, fireballInterval: null,
@@ -359,32 +385,34 @@ function broadcast(room) {
     stars: room.stars, apples: room.apples, fireballs: room.fireballs,
     lasers: room.lasers, powerups: room.powerups,
     scores: room.scores, lives: room.lives,
-    bots: room.bots,
+    bots: room.bots, names: room.names,
   });
 }
 
 // ─── Sockets ─────────────────────────────────────────────────────
 io.on('connection', socket => {
-  socket.on('solo', ({ mode, difficulty }) => {
+  socket.on('solo', ({ mode, difficulty, name }) => {
     const m    = parseInt(mode)||2;
     const bots = m===2 ? ['right'] : ['right','top','bottom'];
     const room = makeRoom(m, bots, difficulty||'normal');
     room.players[socket.id] = 'left';
+    room.names['left'] = (name||'Игрок').slice(0,16);
     socket.join(room.id);
     socket.emit('joined', { roomId: room.id, side: 'left', solo: true });
     io.to(room.id).emit('countdown', {});
     setTimeout(() => startGame(room), 3000);
   });
 
-  socket.on('create', ({ mode }) => {
+  socket.on('create', ({ mode, name }) => {
     const room = makeRoom(parseInt(mode)||2, []);
     room.players[socket.id] = room.sides[0];
+    room.names[room.sides[0]] = (name||'Игрок').slice(0,16);
     socket.join(room.id);
     socket.emit('joined', { roomId: room.id, side: room.sides[0] });
-    io.to(room.id).emit('lobby', { players: [room.sides[0]], mode: room.mode });
+    io.to(room.id).emit('lobby', { players: [room.sides[0]], mode: room.mode, names: room.names });
   });
 
-  socket.on('join', ({ roomId }) => {
+  socket.on('join', ({ roomId, name }) => {
     const room = rooms[roomId?.toUpperCase()];
     if (!room)                  return socket.emit('err','Комната не найдена');
     if (room.phase !== 'lobby') return socket.emit('err','Игра уже идёт');
@@ -393,10 +421,11 @@ io.on('connection', socket => {
     if (!free.length)           return socket.emit('err','Комната заполнена');
     const side = free[0];
     room.players[socket.id] = side;
+    room.names[side] = (name||'Игрок').slice(0,16);
     socket.join(room.id);
     socket.emit('joined', { roomId: room.id, side });
     const all = Object.values(room.players);
-    io.to(room.id).emit('lobby', { players: all, mode: room.mode });
+    io.to(room.id).emit('lobby', { players: all, mode: room.mode, names: room.names });
     if (all.length === room.mode) {
       io.to(room.id).emit('countdown', {});
       setTimeout(() => startGame(room), 3000);

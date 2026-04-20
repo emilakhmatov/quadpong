@@ -2,186 +2,264 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Quad Pong — Мультиплеер</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Quad Pong</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a0a14;color:#fff;font-family:system-ui,-apple-system,sans-serif;
   min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
 
-.screen{display:none;flex-direction:column;align-items:center;gap:1.25rem;
-  width:100%;max-width:400px;padding:2rem 1.25rem}
-.screen.on{display:flex}
+/* ── Screens ── */
+.sc{display:none;flex-direction:column;align-items:center;gap:1.1rem;
+  width:100%;max-width:420px;padding:1.75rem 1.25rem}
+.sc.on{display:flex}
 
-h1{font-size:2.4rem;font-weight:700;letter-spacing:-1px;
+h1{font-size:2.3rem;font-weight:700;letter-spacing:-1px;
   background:linear-gradient(135deg,#7F77DD,#5DCAA5);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.1rem}
 
+/* ── Tabs ── */
+.tabs{display:flex;background:rgba(255,255,255,.06);border-radius:12px;padding:3px;width:100%}
+.tab{flex:1;padding:.5rem;border-radius:9px;text-align:center;cursor:pointer;font-size:.9rem;
+  transition:all .15s;color:rgba(255,255,255,.5)}
+.tab.on{background:rgba(127,119,221,.3);color:#fff;font-weight:500}
+
+/* ── Cards ── */
 .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
   border-radius:16px;padding:1.25rem;width:100%}
-.card-label{font-size:.8rem;opacity:.5;margin-bottom:.75rem}
+.clabel{font-size:.78rem;opacity:.45;margin-bottom:.7rem}
 
-.modes{display:flex;gap:.75rem}
-.mode{flex:1;padding:1.1rem .5rem;background:rgba(255,255,255,.04);
+/* ── Mode buttons ── */
+.modes{display:flex;gap:.65rem}
+.modeBtn{flex:1;padding:1rem .5rem;background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;
-  text-align:center;transition:all .15s;color:#fff;font-size:.9rem}
-.mode:hover,.mode.sel{border-color:#7F77DD;background:rgba(127,119,221,.15)}
-.mode-icon{font-size:1.6rem;margin-bottom:.3rem}
-.mode-sub{font-size:.75rem;opacity:.5;margin-top:.2rem}
+  text-align:center;color:#fff;font-size:.85rem;transition:all .15s}
+.modeBtn:hover,.modeBtn.on{border-color:#7F77DD;background:rgba(127,119,221,.15)}
+.modeIcon{font-size:1.5rem;margin-bottom:.3rem}
+.modeSub{font-size:.7rem;opacity:.45;margin-top:.15rem}
 
+/* ── Difficulty ── */
+.diffs{display:flex;gap:.5rem;margin-top:.7rem}
+.diffBtn{flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);cursor:pointer;font-size:.8rem;color:rgba(255,255,255,.5);text-align:center;transition:all .15s}
+.diffBtn:hover,.diffBtn.on{color:#fff}
+#diff-normal.on{border-color:#5DCAA5;background:rgba(93,202,165,.15)}
+#diff-hard.on  {border-color:#F0997B;background:rgba(240,153,123,.15)}
+
+/* ── Inputs & Buttons ── */
 input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
-  border-radius:10px;color:#fff;font-size:1.6rem;padding:.5rem .75rem;
+  border-radius:10px;color:#fff;font-size:1.5rem;padding:.5rem .75rem;
   width:100%;text-align:center;letter-spacing:.25em;text-transform:uppercase;outline:none}
 input:focus{border-color:#7F77DD}
-input::placeholder{opacity:.25;letter-spacing:.1em}
+input::placeholder{opacity:.22;letter-spacing:.1em}
 
 .btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
-  color:#fff;padding:.7rem 1.5rem;border-radius:10px;font-size:.95rem;
+  color:#fff;padding:.65rem 1.5rem;border-radius:10px;font-size:.9rem;
   cursor:pointer;width:100%;transition:all .15s}
-.btn:hover{background:rgba(255,255,255,.12)}
+.btn:hover{background:rgba(255,255,255,.13)}
 .btn.pri{background:#7F77DD;border-color:#7F77DD}
 .btn.pri:hover{background:#534AB7}
 
-.or{display:flex;align-items:center;gap:.75rem;width:100%;
-  color:rgba(255,255,255,.25);font-size:.8rem}
+.or{display:flex;align-items:center;gap:.65rem;width:100%;
+  color:rgba(255,255,255,.22);font-size:.78rem}
 .or::before,.or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
 
-.room-code{font-size:3.2rem;font-weight:700;letter-spacing:.35em;color:#7F77DD;text-align:center}
-.hint{font-size:.8rem;opacity:.4;text-align:center;line-height:1.6}
-
-.slots{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;width:100%}
-.slot{padding:.55rem .75rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);
-  font-size:.85rem;text-align:center;opacity:.4;transition:all .2s}
+/* ── Waiting ── */
+.roomCode{font-size:3rem;font-weight:700;letter-spacing:.3em;color:#7F77DD;text-align:center}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;width:100%}
+.slot{padding:.5rem .7rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);
+  font-size:.82rem;text-align:center;opacity:.35;transition:all .25s}
 .slot.filled{opacity:1}
-.slot.me{font-weight:600}
 
-.cd-num{font-size:7rem;font-weight:700;color:#7F77DD;text-align:center;line-height:1}
+/* ── Countdown ── */
+.cdNum{font-size:7rem;font-weight:700;color:#7F77DD;text-align:center;line-height:1}
 
-.err{color:#F09595;font-size:.82rem;text-align:center;min-height:1.1em}
-
+/* ── Game canvas wrap ── */
 #gw{width:100vw;height:100vh;display:none;flex-direction:column;
-  align-items:center;justify-content:center;gap:6px}
+  align-items:center;justify-content:center;gap:5px}
 #gw.on{display:flex}
-canvas{display:block;border-radius:12px;cursor:crosshair;touch-action:none}
-#ctrl-hint{font-size:.72rem;opacity:.35;text-align:center}
+canvas{display:block;border-radius:12px;touch-action:none}
+#chint{font-size:.7rem;opacity:.3;text-align:center}
 
-.go-scores{display:flex;flex-direction:column;gap:.35rem;width:100%}
-.go-row{display:flex;justify-content:space-between;padding:.4rem 0;
-  border-bottom:1px solid rgba(255,255,255,.08);font-size:.9rem}
-.winner-tag{font-size:1.1rem;font-weight:600;padding:.45rem 1.25rem;
-  border-radius:8px;text-align:center}
+/* ── Gameover ── */
+.goScores{display:flex;flex-direction:column;gap:.3rem;width:100%}
+.goRow{display:flex;justify-content:space-between;padding:.38rem 0;
+  border-bottom:1px solid rgba(255,255,255,.07);font-size:.88rem}
+.winTag{font-size:1.05rem;font-weight:600;padding:.42rem 1.2rem;border-radius:8px;text-align:center}
+.err{color:#F09595;font-size:.8rem;text-align:center;min-height:1em}
+
+/* ── Power-up flash ── */
+@keyframes flash{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
 
-<!-- ── LOBBY ─────────────────────────────────────── -->
-<div class="screen on" id="s-lobby">
+<!-- ─────────── LOBBY ─────────── -->
+<div class="sc on" id="s-lobby">
   <h1>Quad Pong</h1>
-  <div class="card">
-    <div class="card-label">Создать комнату</div>
-    <div class="modes">
-      <div class="mode sel" data-m="2" onclick="selMode(2,this)">
-        <div class="mode-icon">⬛</div>
-        <div>2 игрока</div>
-        <div class="mode-sub">Лево / Право</div>
+
+  <div class="tabs">
+    <div class="tab on" id="tab-solo"  onclick="switchTab('solo')">Один игрок</div>
+    <div class="tab"    id="tab-multi" onclick="switchTab('multi')">Мультиплеер</div>
+  </div>
+
+  <!-- Solo panel -->
+  <div id="panel-solo" style="width:100%;display:flex;flex-direction:column;gap:.9rem">
+    <div class="card">
+      <div class="clabel">Количество соперников</div>
+      <div class="modes">
+        <div class="modeBtn on" id="solo-2" onclick="setSoloMode(2,this)">
+          <div class="modeIcon">🤖</div><div>1 vs 1</div>
+          <div class="modeSub">Один компьютер</div>
+        </div>
+        <div class="modeBtn" id="solo-4" onclick="setSoloMode(4,this)">
+          <div class="modeIcon">🤖🤖🤖</div><div>1 vs 3</div>
+          <div class="modeSub">Три компьютера</div>
+        </div>
       </div>
-      <div class="mode" data-m="4" onclick="selMode(4,this)">
-        <div class="mode-icon">🔲</div>
-        <div>4 игрока</div>
-        <div class="mode-sub">Все 4 стороны</div>
+      <div class="clabel" style="margin-top:.9rem;margin-bottom:.4rem">Сложность</div>
+      <div class="diffs">
+        <div class="diffBtn on" id="diff-normal" onclick="setDiff('normal',this)">Нормальная</div>
+        <div class="diffBtn"    id="diff-hard"   onclick="setDiff('hard',this)">Сложная</div>
       </div>
     </div>
-    <button class="btn pri" style="margin-top:.9rem" onclick="createRoom()">Создать комнату</button>
+    <button class="btn pri" onclick="startSolo()">Играть против компьютера</button>
   </div>
-  <div class="or">или</div>
-  <div class="card">
-    <div class="card-label">Войти по коду</div>
-    <input id="code-in" placeholder="XXXX" maxlength="4" oninput="this.value=this.value.toUpperCase()">
-    <button class="btn" style="margin-top:.75rem" onclick="joinRoom()">Войти в комнату</button>
+
+  <!-- Multi panel -->
+  <div id="panel-multi" style="width:100%;display:none;flex-direction:column;gap:.9rem">
+    <div class="card">
+      <div class="clabel">Создать новую комнату</div>
+      <div class="modes">
+        <div class="modeBtn on" id="mp-2" onclick="setMpMode(2,this)">
+          <div class="modeIcon">⬛</div><div>2 игрока</div>
+          <div class="modeSub">Лево / Право</div>
+        </div>
+        <div class="modeBtn" id="mp-4" onclick="setMpMode(4,this)">
+          <div class="modeIcon">🔲</div><div>4 игрока</div>
+          <div class="modeSub">Все 4 стороны</div>
+        </div>
+      </div>
+      <button class="btn pri" style="margin-top:.9rem" onclick="createRoom()">Создать комнату</button>
+    </div>
+    <div class="or">или</div>
+    <div class="card">
+      <div class="clabel">Войти по коду</div>
+      <input id="code-in" placeholder="XXXX" maxlength="4" oninput="this.value=this.value.toUpperCase()">
+      <button class="btn" style="margin-top:.7rem" onclick="joinRoom()">Войти в комнату</button>
+    </div>
   </div>
+
   <div class="err" id="lobby-err"></div>
 </div>
 
-<!-- ── WAITING ────────────────────────────────────── -->
-<div class="screen" id="s-wait">
+<!-- ─────────── WAITING ─────────── -->
+<div class="sc" id="s-wait">
   <h1>Quad Pong</h1>
-  <p style="opacity:.45;font-size:.9rem">Код для приглашения игроков</p>
-  <div class="room-code" id="show-code">----</div>
+  <p style="opacity:.42;font-size:.88rem">Код для приглашения</p>
+  <div class="roomCode" id="show-code">----</div>
   <div class="card">
-    <div class="card-label">Игроки онлайн</div>
+    <div class="clabel">Игроки онлайн</div>
     <div class="slots" id="slots"></div>
   </div>
-  <div class="hint">Игра начнётся автоматически<br>когда все игроки подключатся</div>
-  <div style="font-size:.75rem;opacity:.3;background:rgba(255,255,255,.04);
-    padding:.45rem 1rem;border-radius:8px;width:100%;text-align:center"
-    id="your-hint"></div>
+  <p style="font-size:.78rem;opacity:.35;text-align:center">
+    Игра начнётся автоматически<br>когда все подключатся
+  </p>
+  <div style="font-size:.72rem;opacity:.28;background:rgba(255,255,255,.04);
+    padding:.4rem 1rem;border-radius:8px;width:100%;text-align:center" id="your-hint"></div>
 </div>
 
-<!-- ── COUNTDOWN ──────────────────────────────────── -->
-<div class="screen" id="s-cd">
-  <p style="opacity:.45">Приготовьтесь!</p>
-  <div class="cd-num" id="cd-n">3</div>
+<!-- ─────────── COUNTDOWN ─────────── -->
+<div class="sc" id="s-cd">
+  <p style="opacity:.42">Приготовьтесь!</p>
+  <div class="cdNum" id="cd-n">3</div>
+  <p id="cd-mode" style="font-size:.82rem;opacity:.4"></p>
 </div>
 
-<!-- ── GAME ───────────────────────────────────────── -->
+<!-- ─────────── GAME ─────────── -->
 <div id="gw">
   <canvas id="c"></canvas>
-  <div id="ctrl-hint"></div>
+  <div id="chint"></div>
 </div>
 
-<!-- ── GAME OVER ──────────────────────────────────── -->
-<div class="screen" id="s-go">
+<!-- ─────────── GAMEOVER ─────────── -->
+<div class="sc" id="s-go">
   <h1>Конец игры</h1>
-  <div class="winner-tag" id="winner-tag"></div>
+  <div class="winTag" id="win-tag"></div>
   <div class="card" style="width:100%">
-    <div class="card-label">Итоговые очки</div>
-    <div class="go-scores" id="go-scores"></div>
+    <div class="clabel">Итоговые очки</div>
+    <div class="goScores" id="go-scores"></div>
   </div>
   <button class="btn pri" onclick="location.reload()">Играть снова</button>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-// ─── Constants (mirror server) ────────────────────────────────────
-const GW=800,GH=800,WALL=14,PAD_W=14,PAD_LEN=90,BALL_R=10,STAR_R=13;
-const BASE_SPD=300, SPD_PER_SCORE=8, MAX_EXTRA=220;
+// ─── Mirror server constants ──────────────────────────────────────
+const GW=800,GH=800,WALL=14,PAD_W=14,PAD_LEN=90,BALL_R=10,STAR_R=13,APPLE_R=16;
+const BIG_FACTOR=1.5;
+const BASE_SPD_CLIENT=340, SPD_PER_SCORE=9, MAX_EXTRA=220;
 
 const COL  = {left:'#7F77DD',right:'#F0997B',top:'#5DCAA5',bottom:'#ED93B1'};
 const NAME = {left:'Левый',right:'Правый',top:'Верхний',bottom:'Нижний'};
-const CTRL = {left:'мышь ↕  или  W / S',right:'мышь ↕  или  ↑ / ↓',
-              top:'мышь ↔  или  A / D',bottom:'мышь ↔  или  ← / →'};
+const CTRL = {left:'Мышь / W·S',right:'Мышь / ↑↓',top:'Мышь / A·D',bottom:'Мышь / ←→'};
 
-// ─── State ───────────────────────────────────────────────────────
-let socket, myMode=2, myRoomId, mySide, gs=null;
+// ─── App state ───────────────────────────────────────────────────
+let socket, myMode=2, myDiff='normal', mySide, gs=null;
 let canvas, ctx, scale;
 let mouseX=GW/2, mouseY=GH/2;
 let keys={};
 let animId, sendTimer;
 let trail=[];
+// Client-side prediction for own paddle
+let localPos = GW/2 - PAD_LEN/2;
+let localVel = 0;  // keyboard velocity
+const ACCEL=2400, DECEL=3600;
+let lastFrameTime=0;
 
-// ─── UI helpers ──────────────────────────────────────────────────
+// ─── UI ──────────────────────────────────────────────────────────
 function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
   document.getElementById('gw').classList.remove('on');
   const el=document.getElementById(id);
-  if(el) el.classList.add('on');
+  if(el.id==='gw') el.classList.add('on'); else el.classList.add('on');
 }
 
-function selMode(m,el){
-  myMode=m;
-  document.querySelectorAll('.mode').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');
+function switchTab(t){
+  document.getElementById('tab-solo').classList.toggle('on',t==='solo');
+  document.getElementById('tab-multi').classList.toggle('on',t==='multi');
+  document.getElementById('panel-solo').style.display = t==='solo'?'flex':'none';
+  document.getElementById('panel-multi').style.display= t==='multi'?'flex':'none';
+}
+
+let soloMode=2;
+function setSoloMode(m,el){
+  soloMode=m;
+  document.querySelectorAll('[id^="solo-"]').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function setDiff(d,el){
+  myDiff=d;
+  document.querySelectorAll('.diffBtn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+let mpMode=2;
+function setMpMode(m,el){
+  mpMode=m;
+  document.querySelectorAll('[id^="mp-"]').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
 }
 
 // ─── Socket ──────────────────────────────────────────────────────
 socket=io();
 
-socket.on('joined',({roomId,side})=>{
-  myRoomId=roomId; mySide=side;
-  document.getElementById('show-code').textContent=roomId;
-  document.getElementById('your-hint').textContent=
-    `Вы — ${NAME[side]}  |  Управление: ${CTRL[side]}`;
-  show('s-wait');
+socket.on('joined',({roomId,side,solo})=>{
+  mySide=side;
+  if(!solo){
+    document.getElementById('show-code').textContent=roomId;
+    document.getElementById('your-hint').textContent=`Вы — ${NAME[side]}  |  ${CTRL[side]}`;
+    show('s-wait');
+  }
 });
 
 socket.on('lobby',({players,mode})=>{
@@ -189,10 +267,8 @@ socket.on('lobby',({players,mode})=>{
   const all=mode===2?['left','right']:['left','right','top','bottom'];
   document.getElementById('slots').innerHTML=all.map(s=>{
     const ok=players.includes(s);
-    return `<div class="slot ${ok?'filled':''} ${s===mySide?'me':''}"
-      style="border-color:${ok?COL[s]+'66':'rgba(255,255,255,.1)'};color:${ok?COL[s]:'rgba(255,255,255,.3)'}">
-      ${NAME[s]} ${ok?(s===mySide?'(вы)':'✓'):'…'}
-    </div>`;
+    return `<div class="slot ${ok?'filled':''}" style="border-color:${ok?COL[s]+'66':'rgba(255,255,255,.1)'};color:${ok?COL[s]:'rgba(255,255,255,.3)'}">
+      ${NAME[s]} ${ok?(s===mySide?'(вы)':'✓'):'…'}</div>`;
   }).join('');
 });
 
@@ -201,40 +277,39 @@ socket.on('countdown',()=>{
   let n=3;
   document.getElementById('cd-n').textContent=n;
   const t=setInterval(()=>{
-    n--;
-    if(n<=0){clearInterval(t);initGame();}
+    n--; if(n<=0){clearInterval(t);initGame();}
     else document.getElementById('cd-n').textContent=n;
   },1000);
 });
 
-socket.on('state',s=>{gs=s;});
+socket.on('state',s=>{ gs=s; });
 
 socket.on('gameover',({winner,scores})=>{
   cancelAnimationFrame(animId); clearInterval(sendTimer);
-  const tag=document.getElementById('winner-tag');
-  if(winner){tag.textContent=NAME[winner]+' победил!';
-    tag.style.background=COL[winner]+'33';tag.style.color=COL[winner];}
-  else{tag.textContent='Ничья!';tag.style.color='#fff';}
+  const wt=document.getElementById('win-tag');
+  if(winner){wt.textContent=NAME[winner]+' победил!';wt.style.background=COL[winner]+'33';wt.style.color=COL[winner];}
+  else{wt.textContent='Ничья!';wt.style.color='#fff';}
   const all=myMode===2?['left','right']:['left','right','top','bottom'];
   document.getElementById('go-scores').innerHTML=all.map(s=>
-    `<div class="go-row"><span style="color:${COL[s]}">${NAME[s]}</span>
-    <span>${scores[s]||0} очков</span></div>`).join('');
+    `<div class="goRow"><span style="color:${COL[s]}">${NAME[s]}</span><span>${scores[s]||0} очков</span></div>`).join('');
   show('s-go');
 });
 
-socket.on('playerLeft',({side})=>{
+socket.on('playerLeft',()=>{
   cancelAnimationFrame(animId); clearInterval(sendTimer);
-  alert(`Игрок «${NAME[side]}» отключился. Игра завершена.`);
-  location.reload();
+  alert('Один из игроков отключился.'); location.reload();
 });
+socket.on('err',m=>{ document.getElementById('lobby-err').textContent=m; });
 
-socket.on('err',msg=>{document.getElementById('lobby-err').textContent=msg;});
-
-// ─── Lobby actions ───────────────────────────────────────────────
-function createRoom(){socket.emit('create',{mode:myMode});}
+// ─── Actions ─────────────────────────────────────────────────────
+function startSolo(){
+  myMode=soloMode;
+  socket.emit('solo',{mode:soloMode,difficulty:myDiff});
+}
+function createRoom(){ myMode=mpMode; socket.emit('create',{mode:mpMode}); }
 function joinRoom(){
   const c=document.getElementById('code-in').value.trim();
-  if(c.length!==4){document.getElementById('lobby-err').textContent='Введи 4-символьный код';return;}
+  if(c.length!==4){document.getElementById('lobby-err').textContent='Нужен 4-символьный код';return;}
   socket.emit('join',{roomId:c});
 }
 
@@ -244,119 +319,136 @@ function initGame(){
   ctx=canvas.getContext('2d');
   resize(); window.addEventListener('resize',resize);
 
+  // Mouse
   canvas.addEventListener('mousemove',e=>{
     const r=canvas.getBoundingClientRect();
-    mouseX=(e.clientX-r.left)/scale; mouseY=(e.clientY-r.top)/scale;
+    mouseX=(e.clientX-r.left)/scale;
+    mouseY=(e.clientY-r.top)/scale;
   });
-  canvas.addEventListener('touchmove',e=>{
+  // Touch
+  const onTouch=e=>{
     e.preventDefault();
     const r=canvas.getBoundingClientRect();
     const t=e.touches[0];
-    mouseX=(t.clientX-r.left)/scale; mouseY=(t.clientY-r.top)/scale;
-  },{passive:false});
-  canvas.addEventListener('touchstart',e=>{
-    const r=canvas.getBoundingClientRect();
-    const t=e.touches[0];
-    mouseX=(t.clientX-r.left)/scale; mouseY=(t.clientY-r.top)/scale;
-  });
+    mouseX=(t.clientX-r.left)/scale;
+    mouseY=(t.clientY-r.top)/scale;
+  };
+  canvas.addEventListener('touchstart',onTouch,{passive:false});
+  canvas.addEventListener('touchmove', onTouch,{passive:false});
 
+  // Keyboard
   window.addEventListener('keydown',e=>{
     keys[e.key]=true;
-    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
   });
-  window.addEventListener('keyup',e=>{keys[e.key]=false;});
+  window.addEventListener('keyup',e=>keys[e.key]=false);
 
-  document.getElementById('ctrl-hint').textContent=`Вы — ${NAME[mySide]}  |  ${CTRL[mySide]}`;
+  document.getElementById('chint').textContent=`${NAME[mySide]}  |  ${CTRL[mySide]}`;
   document.getElementById('gw').classList.add('on');
-  show('gw');
 
+  // Init local paddle at center
+  const isV=mySide==='left'||mySide==='right';
+  localPos=(isV?GH:GW)/2-PAD_LEN/2;
+  localVel=0;
+
+  // Send at 60fps
   sendTimer=setInterval(sendPos,1000/60);
+  lastFrameTime=performance.now();
   animId=requestAnimationFrame(loop);
 }
 
 function resize(){
-  const sz=Math.min(window.innerWidth-16,window.innerHeight-60,720);
-  canvas.width=canvas.height=sz;
-  scale=sz/GW;
+  const sz=Math.min(window.innerWidth-12,window.innerHeight-52,730);
+  canvas.width=canvas.height=sz; scale=sz/GW;
 }
 
-// ─── Paddle control ──────────────────────────────────────────────
-function myPaddlePos(){
-  const isV=mySide==='left'||mySide==='right';
-  const cur=gs?.paddles?.[mySide]?.pos??((isV?GH:GW)/2-PAD_LEN/2);
-  const sc =gs?.scores?.[mySide]||0;
-  const spd=(BASE_SPD+Math.min(sc*SPD_PER_SCORE,MAX_EXTRA))/60;
-  let pos=cur, keyUsed=false;
+// ─── Smooth paddle input ─────────────────────────────────────────
+function updateLocalPaddle(dt){
+  const isV  = mySide==='left'||mySide==='right';
+  const sc   = gs?.scores?.[mySide]||0;
+  const spd  = Math.min(BASE_SPD_CLIENT + sc*SPD_PER_SCORE, BASE_SPD_CLIENT+MAX_EXTRA);
+  const eLen = (gs?.powerups?.[mySide]?.type==='big') ? PAD_LEN*BIG_FACTOR : PAD_LEN;
+  const lim  = (isV?GH:GW) - WALL - PAD_W - eLen;
 
+  // Check which keys are down
+  let dir=0;
   if(isV){
-    if(mySide==='left'){
-      if(keys['w']||keys['W']){pos=cur-spd;keyUsed=true;}
-      if(keys['s']||keys['S']){pos=cur+spd;keyUsed=true;}
-    }else{
-      if(keys['ArrowUp'])  {pos=cur-spd;keyUsed=true;}
-      if(keys['ArrowDown']){pos=cur+spd;keyUsed=true;}
-    }
-    if(!keyUsed) pos=mouseY-PAD_LEN/2;
-  }else{
-    if(mySide==='top'){
-      if(keys['a']||keys['A']){pos=cur-spd;keyUsed=true;}
-      if(keys['d']||keys['D']){pos=cur+spd;keyUsed=true;}
-    }else{
-      if(keys['ArrowLeft']) {pos=cur-spd;keyUsed=true;}
-      if(keys['ArrowRight']){pos=cur+spd;keyUsed=true;}
-    }
-    if(!keyUsed) pos=mouseX-PAD_LEN/2;
+    if(mySide==='left') { if(keys['w']||keys['W'])dir=-1; if(keys['s']||keys['S'])dir=1; }
+    else                { if(keys['ArrowUp'])dir=-1; if(keys['ArrowDown'])dir=1; }
+  } else {
+    if(mySide==='top')    { if(keys['a']||keys['A'])dir=-1; if(keys['d']||keys['D'])dir=1; }
+    else                  { if(keys['ArrowLeft'])dir=-1; if(keys['ArrowRight'])dir=1; }
   }
-  const lim=(isV?GH:GW)-WALL-PAD_W-PAD_LEN;
-  return Math.max(WALL+PAD_W,Math.min(lim,pos));
+
+  if(dir !== 0){
+    // Accelerate
+    localVel = Math.sign(dir) * Math.min(Math.abs(localVel)+ACCEL*dt, spd);
+  } else {
+    // Decelerate
+    const dec = DECEL*dt;
+    localVel  = Math.abs(localVel) < dec ? 0 : localVel - Math.sign(localVel)*dec;
+  }
+
+  if(localVel !== 0){
+    localPos = Math.max(WALL+PAD_W, Math.min(lim, localPos + localVel*dt));
+  } else {
+    // Mouse/touch: follow cursor directly
+    const mouseTarget = isV ? mouseY - eLen/2 : mouseX - eLen/2;
+    localPos = Math.max(WALL+PAD_W, Math.min(lim, mouseTarget));
+  }
 }
 
-let lastPos=null;
+let lastSent=null;
 function sendPos(){
   if(!gs) return;
-  const p=myPaddlePos();
-  if(p!==lastPos){socket.emit('move',{pos:p});lastPos=p;}
+  const p=Math.round(localPos);
+  if(p!==lastSent){ socket.emit('move',{pos:p}); lastSent=p; }
+}
+
+// ─── Game loop ───────────────────────────────────────────────────
+function loop(now){
+  const dt=Math.min((now-lastFrameTime)/1000, 0.05);
+  lastFrameTime=now;
+  updateLocalPaddle(dt);
+  draw();
+  animId=requestAnimationFrame(loop);
 }
 
 // ─── Draw ────────────────────────────────────────────────────────
-function loop(){animId=requestAnimationFrame(loop);draw();}
-
 function draw(){
-  if(!ctx)return;
+  if(!ctx) return;
   const S=canvas.width;
   ctx.clearRect(0,0,S,S);
 
-  // Background
+  // BG
   ctx.fillStyle='#0f0f1a';
-  rr(0,0,S,S,12); ctx.fill();
+  if(ctx.roundRect){ctx.beginPath();ctx.roundRect(0,0,S,S,12);ctx.fill();}
+  else{ctx.fillRect(0,0,S,S);}
 
   // Grid
-  ctx.strokeStyle='rgba(127,119,221,.055)';ctx.lineWidth=.5;
+  ctx.strokeStyle='rgba(127,119,221,.05)'; ctx.lineWidth=.5;
   for(let i=1;i<10;i++){
     const v=S/10*i;
     ctx.beginPath();ctx.moveTo(v,0);ctx.lineTo(v,S);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,v);ctx.lineTo(S,v);ctx.stroke();
   }
-
-  // Dashed center lines
-  ctx.strokeStyle='rgba(127,119,221,.1)';ctx.lineWidth=.8;ctx.setLineDash([5,9]);
+  ctx.strokeStyle='rgba(127,119,221,.1)';ctx.lineWidth=.8;ctx.setLineDash([4,8]);
   ctx.beginPath();ctx.moveTo(S/2,WALL*scale);ctx.lineTo(S/2,S-WALL*scale);ctx.stroke();
   ctx.beginPath();ctx.moveTo(WALL*scale,S/2);ctx.lineTo(S-WALL*scale,S/2);ctx.stroke();
   ctx.setLineDash([]);
 
   if(!gs){
-    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font=`${14*scale}px system-ui`;
-    ctx.textAlign='center';ctx.fillText('Ожидание игроков…',S/2,S/2);
-    return;
+    ctx.fillStyle='rgba(255,255,255,.25)';ctx.font=`${13*scale}px system-ui`;
+    ctx.textAlign='center'; ctx.fillText('Ожидание…',S/2,S/2); return;
   }
 
-  const{ball,paddles,stars,lasers,scores,lives}=gs;
+  const{ball,paddles,stars,apples,lasers,powerups,scores,lives,bots}=gs;
   const all=myMode===2?['left','right']:['left','right','top','bottom'];
 
   // Walls
   all.forEach(s=>{
     const alive=paddles[s]?.alive;
-    ctx.fillStyle=alive?'rgba(255,255,255,.055)':'rgba(220,70,70,.18)';
+    ctx.fillStyle=alive?'rgba(255,255,255,.05)':'rgba(220,70,70,.15)';
     const w=WALL*scale;
     if(s==='left')  ctx.fillRect(0,0,w,S);
     if(s==='right') ctx.fillRect(S-w,0,w,S);
@@ -364,112 +456,167 @@ function draw(){
     if(s==='bottom')ctx.fillRect(0,S-w,S,w);
   });
 
-  // Lasers (behind paddles, in front of wall)
+  // Lasers
   all.forEach(s=>{
-    if(!lasers?.[s])return;
-    const pad=paddles[s];if(!pad?.alive)return;
-    const lOff=(WALL+PAD_W+18)*scale;
-    const p1=pad.pos*scale, p2=(pad.pos+PAD_LEN)*scale;
-    ctx.strokeStyle='#FF3344';ctx.lineWidth=2.5*scale;
-    ctx.shadowColor='#FF3344';ctx.shadowBlur=14*scale;
+    if(!lasers?.[s]) return;
+    const pad=paddles[s]; if(!pad?.alive) return;
+    const eLen=(powerups?.[s]?.type==='big'?PAD_LEN*BIG_FACTOR:PAD_LEN)*scale;
+    const lOff=(WALL+PAD_W+22)*scale;
+    const p1=pad.pos*scale, p2=p1+eLen;
+    ctx.strokeStyle='#FF3344'; ctx.lineWidth=2.5*scale;
+    ctx.shadowColor='#FF2233'; ctx.shadowBlur=14*scale;
     ctx.beginPath();
     if(s==='left')  {ctx.moveTo(lOff,p1);ctx.lineTo(lOff,p2);}
     if(s==='right') {ctx.moveTo(S-lOff,p1);ctx.lineTo(S-lOff,p2);}
     if(s==='top')   {ctx.moveTo(p1,lOff);ctx.lineTo(p2,lOff);}
     if(s==='bottom'){ctx.moveTo(p1,S-lOff);ctx.lineTo(p2,S-lOff);}
-    ctx.stroke();
-    ctx.shadowBlur=0;
-
-    // Label
-    ctx.fillStyle='rgba(255,51,68,.7)';ctx.font=`bold ${8*scale}px system-ui`;
-    ctx.textAlign='center';
-    const mx=(p1+p2)/2;
-    if(s==='left')  ctx.fillText('⚡ЛАЗЕР',lOff+20*scale,mx);
-    if(s==='right') ctx.fillText('⚡ЛАЗЕР',S-lOff-20*scale,mx);
-    if(s==='top')   ctx.fillText('⚡ЛАЗЕР',mx,lOff+16*scale);
-    if(s==='bottom')ctx.fillText('⚡ЛАЗЕР',mx,S-lOff-10*scale);
+    ctx.stroke(); ctx.shadowBlur=0;
   });
 
   // Paddles
   all.forEach(s=>{
-    const pad=paddles[s];if(!pad?.alive)return;
+    const pad=paddles[s]; if(!pad?.alive) return;
     const col=COL[s];
-    const pw=PAD_W*scale,pl=PAD_LEN*scale,wOf=WALL*scale;
+    const isBig=(powerups?.[s]?.type==='big');
+    const eLen=(isBig?PAD_LEN*BIG_FACTOR:PAD_LEN)*scale;
+    const pw=PAD_W*scale, wOf=WALL*scale;
+    const displayPos = (s===mySide) ? localPos : pad.pos;
     let rx,ry,rw,rh;
-    if(s==='left')  {rx=wOf;        ry=pad.pos*scale;rw=pw;rh=pl;}
-    if(s==='right') {rx=S-wOf-pw;   ry=pad.pos*scale;rw=pw;rh=pl;}
-    if(s==='top')   {rx=pad.pos*scale;ry=wOf;       rw=pl;rh=pw;}
-    if(s==='bottom'){rx=pad.pos*scale;ry=S-wOf-pw;  rw=pl;rh=pw;}
-    if(s===mySide){ctx.shadowColor=col;ctx.shadowBlur=16*scale;}
-    ctx.fillStyle=col;
-    rr(rx,ry,rw,rh,3*scale);ctx.fill();
-    ctx.shadowBlur=0;
+    if(s==='left')  {rx=wOf;         ry=displayPos*scale; rw=pw;   rh=eLen;}
+    if(s==='right') {rx=S-wOf-pw;    ry=displayPos*scale; rw=pw;   rh=eLen;}
+    if(s==='top')   {rx=displayPos*scale; ry=wOf;         rw=eLen; rh=pw;}
+    if(s==='bottom'){rx=displayPos*scale; ry=S-wOf-pw;    rw=eLen; rh=pw;}
 
-    // Score & lives display next to wall
+    // Glow for own paddle OR big power-up
+    const glowC = isBig ? '#FFCC44' : (s===mySide ? col : null);
+    if(glowC){ctx.shadowColor=glowC; ctx.shadowBlur=(isBig?20:12)*scale;}
+    ctx.fillStyle = isBig ? shiftColor(col, 40) : col;
+    rrFill(rx,ry,rw,rh,3*scale); ctx.shadowBlur=0;
+
+    // Bot label
+    if(bots?.[s]){
+      ctx.fillStyle='rgba(255,255,255,.3)';ctx.font=`${8*scale}px system-ui`;ctx.textAlign='center';
+      const wc=WALL*scale/2;
+      if(s==='left')  ctx.fillText('AI',wc,S/2);
+      if(s==='right') ctx.fillText('AI',S-wc,S/2);
+      if(s==='top')   ctx.fillText('AI',S/2,wc+10*scale);
+      if(s==='bottom')ctx.fillText('AI',S/2,S-wc+4*scale);
+    }
+
+    // Score + lives
     const wc=WALL*scale/2;
-    ctx.fillStyle=col;ctx.textAlign='center';
     const sc=scores[s]||0, lv=lives[s]||0;
-    const lstr='♥'.repeat(Math.max(0,lv));
+    ctx.fillStyle=col; ctx.textAlign='center';
     ctx.font=`bold ${10*scale}px system-ui`;
-    if(s==='left')  {ctx.fillText(sc,wc,S/2-7*scale);ctx.font=`${8*scale}px system-ui`;ctx.fillText(lstr,wc,S/2+7*scale);}
-    if(s==='right') {ctx.fillText(sc,S-wc,S/2-7*scale);ctx.font=`${8*scale}px system-ui`;ctx.fillText(lstr,S-wc,S/2+7*scale);}
-    if(s==='top')   {ctx.fillText(sc,S/2,wc+1*scale);ctx.font=`${8*scale}px system-ui`;ctx.fillText(lstr,S/2,wc+12*scale);}
-    if(s==='bottom'){ctx.fillText(sc,S/2,S-wc-4*scale);ctx.font=`${8*scale}px system-ui`;ctx.fillText(lstr,S/2,S-2*scale);}
+    if(s==='left')  {ctx.fillText(sc,wc,S/2-8*scale);}
+    if(s==='right') {ctx.fillText(sc,S-wc,S/2-8*scale);}
+    if(s==='top')   {ctx.fillText(sc,S/2,wc+2*scale);}
+    if(s==='bottom'){ctx.fillText(sc,S/2,S-wc-3*scale);}
+    ctx.font=`${8*scale}px system-ui`;
+    const lstr='♥'.repeat(Math.max(0,lv));
+    if(s==='left')  ctx.fillText(lstr,wc,S/2+7*scale);
+    if(s==='right') ctx.fillText(lstr,S-wc,S/2+7*scale);
+    if(s==='top')   ctx.fillText(lstr,S/2,wc+12*scale);
+    if(s==='bottom')ctx.fillText(lstr,S/2,S-2*scale);
   });
 
-  // Stars
+  // Power-up timer bar for my paddle
+  if(powerups?.[mySide]?.type==='big'){
+    const pu=powerups[mySide];
+    const frac=Math.max(0,pu.timer/6);
+    const bw=100*scale, bh=5*scale;
+    const bx=(S-bw)/2, by=S-WALL*scale-bh-4*scale;
+    ctx.fillStyle='rgba(255,204,68,.2)';
+    ctx.fillRect(bx,by,bw,bh);
+    ctx.fillStyle='#FFCC44';
+    ctx.fillRect(bx,by,bw*frac,bh);
+  }
+
+  // Stars ⭐
   (stars||[]).forEach(st=>{
-    const sx=st.x*scale,sy=st.y*scale,sr=STAR_R*scale;
-    ctx.fillStyle='#FFD700';ctx.shadowColor='#FFAA00';ctx.shadowBlur=12*scale;
-    star5(ctx,sx,sy,sr,sr*.42);
+    ctx.fillStyle='#FFD700'; ctx.shadowColor='#FFAA00'; ctx.shadowBlur=12*scale;
+    star5(st.x*scale,st.y*scale,STAR_R*scale,STAR_R*.42*scale);
     ctx.shadowBlur=0;
+    // label
+    ctx.fillStyle='rgba(255,215,0,.55)'; ctx.font=`${7*scale}px system-ui`; ctx.textAlign='center';
+    ctx.fillText('⚡ЛАЗЕР',st.x*scale,st.y*scale+STAR_R*scale+9*scale);
+  });
+
+  // Apples 🍎
+  (apples||[]).forEach(ap=>{
+    drawApple(ap.x*scale, ap.y*scale, APPLE_R*scale);
+    ctx.fillStyle='rgba(255,80,80,.55)'; ctx.font=`${7*scale}px system-ui`; ctx.textAlign='center';
+    ctx.fillText('+РАЗМЕР',ap.x*scale,ap.y*scale+APPLE_R*scale+9*scale);
   });
 
   // Ball trail
   if(ball){
-    trail.push({x:ball.x,y:ball.y,t:Date.now()});
-    trail=trail.filter(p=>Date.now()-p.t<120);
+    trail.push({x:ball.x,y:ball.y,t:performance.now()});
+    const cutoff=performance.now()-100;
+    trail=trail.filter(p=>p.t>cutoff);
     trail.forEach((p,i)=>{
-      const a=(i/trail.length)*.2;
-      ctx.beginPath();ctx.arc(p.x*scale,p.y*scale,BALL_R*scale*(i/trail.length),0,Math.PI*2);
-      ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();
+      const a=(i/trail.length)*.18;
+      ctx.beginPath(); ctx.arc(p.x*scale,p.y*scale,BALL_R*scale*(i/trail.length)*.9,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${a})`; ctx.fill();
     });
   }
 
   // Ball
   if(ball){
-    const bx=ball.x*scale,by=ball.y*scale,br=BALL_R*scale;
+    const bx=ball.x*scale, by=ball.y*scale, br=BALL_R*scale;
     if(ball.frozen){
-      const pulse=1+.18*Math.sin(Date.now()/140);
-      ctx.fillStyle='#88CCFF';ctx.shadowColor='#66AAFF';ctx.shadowBlur=22*scale;
-      ctx.beginPath();ctx.arc(bx,by,br*pulse,0,Math.PI*2);ctx.fill();
-
-      // Countdown ring
-      const prog=ball.freezeTimer!==undefined?ball.freezeTimer/2:1;
-      ctx.strokeStyle='rgba(136,204,255,.5)';ctx.lineWidth=2*scale;
-      ctx.beginPath();ctx.arc(bx,by,br*2,-(Math.PI/2),-(Math.PI/2)+prog*2*Math.PI);ctx.stroke();
-    }else{
-      ctx.fillStyle='#ffffff';ctx.shadowColor='#ffffff';ctx.shadowBlur=16*scale;
-      ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();
+      const pulse=1+.18*Math.sin(performance.now()/130);
+      ctx.fillStyle='#88CCFF'; ctx.shadowColor='#66AAFF'; ctx.shadowBlur=20*scale;
+      ctx.beginPath(); ctx.arc(bx,by,br*pulse,0,Math.PI*2); ctx.fill();
+      // Arc countdown ring
+      ctx.strokeStyle='rgba(136,204,255,.45)'; ctx.lineWidth=2*scale;
+      const prog=(ball.freezeTimer||0)/2;
+      ctx.beginPath(); ctx.arc(bx,by,br*2.2,-Math.PI/2,-Math.PI/2+prog*2*Math.PI); ctx.stroke();
+    } else {
+      ctx.fillStyle='#fff'; ctx.shadowColor='#fff'; ctx.shadowBlur=15*scale;
+      ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.fill();
     }
     ctx.shadowBlur=0;
   }
 }
 
-// ─── Helpers ────────────────────────────────────────────────────
-function rr(x,y,w,h,r){
-  if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,r);}
-  else{ctx.beginPath();ctx.rect(x,y,w,h);}
+// ─── Helpers ─────────────────────────────────────────────────────
+function rrFill(x,y,w,h,r){
+  ctx.beginPath();
+  if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h);
+  ctx.fill();
 }
-
-function star5(ctx,cx,cy,outerR,innerR){
-  let rot=-Math.PI/2,step=Math.PI/5;
-  ctx.beginPath();ctx.moveTo(cx,cy-outerR);
+function star5(cx,cy,oR,iR){
+  let rot=-Math.PI/2, step=Math.PI/5;
+  ctx.beginPath(); ctx.moveTo(cx,cy-oR);
   for(let i=0;i<5;i++){
-    ctx.lineTo(cx+Math.cos(rot)*outerR,cy+Math.sin(rot)*outerR);rot+=step;
-    ctx.lineTo(cx+Math.cos(rot)*innerR,cy+Math.sin(rot)*innerR);rot+=step;
+    ctx.lineTo(cx+Math.cos(rot)*oR,cy+Math.sin(rot)*oR); rot+=step;
+    ctx.lineTo(cx+Math.cos(rot)*iR,cy+Math.sin(rot)*iR); rot+=step;
   }
-  ctx.closePath();ctx.fill();
+  ctx.closePath(); ctx.fill();
+}
+function drawApple(cx,cy,r){
+  // Body
+  ctx.fillStyle='#E84040'; ctx.shadowColor='#FF2222'; ctx.shadowBlur=12*scale;
+  ctx.beginPath(); ctx.arc(cx,cy+r*.1,r*.88,0,Math.PI*2); ctx.fill();
+  ctx.shadowBlur=0;
+  // Leaf
+  ctx.fillStyle='#44CC44';
+  ctx.beginPath(); ctx.ellipse(cx+r*.2,cy-r*.6,r*.32,r*.22,-0.6,0,Math.PI*2); ctx.fill();
+  // Stem
+  ctx.strokeStyle='#6B3A2A'; ctx.lineWidth=1.5*scale;
+  ctx.beginPath(); ctx.moveTo(cx,cy-r*.7); ctx.lineTo(cx,cy-r*.3); ctx.stroke();
+  // Shine
+  ctx.fillStyle='rgba(255,255,255,.25)';
+  ctx.beginPath(); ctx.ellipse(cx-r*.22,cy-r*.15,r*.2,r*.12,-0.5,0,Math.PI*2); ctx.fill();
+}
+function shiftColor(hex,amt){
+  // Lighten hex color
+  const num=parseInt(hex.slice(1),16);
+  const r=Math.min(255,((num>>16)&0xff)+amt);
+  const g=Math.min(255,((num>>8)&0xff)+amt);
+  const b=Math.min(255,(num&0xff)+amt);
+  return `#${((r<<16)|(g<<8)|b).toString(16).padStart(6,'0')}`;
 }
 </script>
 </body>
